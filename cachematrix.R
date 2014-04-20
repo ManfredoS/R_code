@@ -5,7 +5,9 @@
 # 20.04.14 ms
 #
 ###############################################
-#
+##
+## Save corresponding matrix data object within list object:
+##
 makeCacheMatrix <- function(x = numeric()) {
   m <- NULL
   set <- function(y) {
@@ -19,8 +21,11 @@ makeCacheMatrix <- function(x = numeric()) {
        setmatrix = setmatrix,
        getmatrix = getmatrix)
 }
-#
-#
+##
+## Extract or calculate corresponding matrix inverse and return
+## message weather or not inverse has been extracted from the
+## cache:
+##
 cacheSolve <- function(x, ...) {
   m <- x$getmatrix()
   if(!is.null(m)) {
