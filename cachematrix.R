@@ -1,14 +1,10 @@
-##
-##
-## Function cacheMatrix
-##
-## 20.04.14 ms
-##
+###############################################
+## [20.04.14 ms. Function to calculate or retrieve matrix inverse from cache]
 ###############################################
 ##
 ## Save corresponding matrix data object within list object:
 ##
-makeCacheMatrix <- function(x = numeric()) {
+makeCacheMatrix <- function(x = matrix()) {
   m <- NULL
   set <- function(y) {
     x <<- y
