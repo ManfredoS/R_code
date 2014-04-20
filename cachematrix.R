@@ -2,9 +2,37 @@
 #
 # Function cacheMatrix
 #
-# 18.04.14 ms
+# 20.04.14 ms
 #
 ###############################################
 #
+makeCacheMatrix <- function(x = numeric()) {
+  m <- NULL
+  set <- function(y) {
+    x <<- y
+    m <<- NULL
+  }
+  get <- function() x
+  setmatrix <- function(solve) m <<- solve
+  getmatrix <- function() m
+  list(set = set, get = get,
+       setmatrix = setmatrix,
+       getmatrix = getmatrix)
+}
 #
-# Add some new stuff to see if it was updated!
+#
+cacheSolve <- function(x, ...) {
+  m <- x$getmatrix()
+  if(!is.null(m)) {
+    message("getting cached data")
+    return(m)
+  }
+  data <- x$get()
+  m <- solve(data, ...)
+  x$setmatrix(m)
+  m
+}
+###############################################
+
+
+
