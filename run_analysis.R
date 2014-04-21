@@ -15,23 +15,23 @@ require(reshape2)
 ##
 
 ## load and check feature discription (x variable names)
-list.files("./data/UCI HAR Dataset")
-features <- read.table(file="./data/UCI HAR Dataset/features.txt",header=FALSE)
+list.files("./UCI HAR Dataset")
+features <- read.table(file="./UCI HAR Dataset/features.txt",header=FALSE)
 
 ## load and combine train data:
-list.files(c("./data/UCI HAR Dataset/train","./data/UCI HAR Dataset/test"))
+list.files(c("./data/UCI HAR Dataset/train","./UCI HAR Dataset/test"))
 ##
-y_train <- read.table(file="./data/UCI HAR Dataset/train/y_train.txt",header=FALSE);names(y_train) <- "Y" 
-x_train <- read.table(file="./data/UCI HAR Dataset/train/x_train.txt",header=FALSE);names(x_train) <- features[,2]
-subject_train <- read.table(file="./data/UCI HAR Dataset/train/subject_train.txt",header=FALSE); names(subject_train) <- "Subject"
+y_train <- read.table(file="./UCI HAR Dataset/train/y_train.txt",header=FALSE);names(y_train) <- "Y" 
+x_train <- read.table(file="./UCI HAR Dataset/train/x_train.txt",header=FALSE);names(x_train) <- features[,2]
+subject_train <- read.table(file="./UCI HAR Dataset/train/subject_train.txt",header=FALSE); names(subject_train) <- "Subject"
 ##
 ## combind the 3 data.sets and add info, which set they´re from:
 train <- cbind("train",subject_train,y_train,x_train);names(train)[1] <- "Set"   
 
 ## load and combine test data:
-y_test <- read.table(file="./data/UCI HAR Dataset/test/y_test.txt",header=FALSE);names(y_test) <- "Y" 
-x_test <- read.table(file="./data/UCI HAR Dataset/test/x_test.txt",header=FALSE);names(x_test) <- features[,2]
-subject_test <- read.table(file="./data/UCI HAR Dataset/test/subject_test.txt",header=FALSE); names(subject_test) <- "Subject"
+y_test <- read.table(file="./UCI HAR Dataset/test/y_test.txt",header=FALSE);names(y_test) <- "Y" 
+x_test <- read.table(file="./UCI HAR Dataset/test/x_test.txt",header=FALSE);names(x_test) <- features[,2]
+subject_test <- read.table(file="./UCI HAR Dataset/test/subject_test.txt",header=FALSE); names(subject_test) <- "Subject"
 ## combind the 3 data.sets and add info, which set they´re from:
 test <- cbind("test",subject_test,y_test,x_test);names(test)[1] <- "Set"   
 ## check if all columns match:
@@ -57,7 +57,7 @@ MSD <- combi[,c(1:3,grep("mean()",colnames(combi)),grep("std()",colnames(combi))
 ###############################################
 
 ## reading the activity description:
-activities <- read.table(file="./data/UCI HAR Dataset/activity_labels.txt",header=FALSE)
+activities <- read.table(file="./UCI HAR Dataset/activity_labels.txt",header=FALSE)
 ## make data frame containing the meaning of the activity coding:
 Activities <- data.frame(Activity=activities[,2][combi$Y])
 
