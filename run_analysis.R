@@ -40,8 +40,8 @@ all.equal(names(train),names(test))
 ## bind the two data sets together:
 combi <- rbind(train,test);paste(dim(combi)[1],"rows",dim(combi)[2],"columns",sep=" ")
 ## [1] "10299 rows 564 columns"
-## make Subject a factor:
-combi$Subject <- as.factor(combi$Subject)
+## make set, subject and Y factors:
+for(i in 1:3){combi[,i] <- as.factor(combi[,i])}
 
 ###############################################
 ## 2) Extract only the measurements on the mean and standard deviation for each measurement. 
@@ -67,4 +67,8 @@ MSD <- merge(Means,SDs,by=0);names(MSD)[1] <- "Feature_variable";MSD[,1] <- as.f
 
 
 
+###############################################
 ## 5) Create a second, independent tidy data set with the average of each variable for each activity and each subject. 
+###############################################
+Tidy <- data.frame(Var1=seq(1,10),Var2=seq(10,100,10))
+write.table(Tidy,"Tidy.txt",sep=";",row.names=FALSE)
