@@ -49,26 +49,52 @@ for(i in 1:3){combi[,i] <- as.factor(combi[,i])}
 
 ## check if NAs are present:
 which(is.na(combi))
-## make a data frame for the means and sds for all features(variables)
-Means <- data.frame(sapply(combi[,4:length(colnames(combi))],mean));names(Means) <- "Means"
-SDs <- data.frame(sapply(combi[,4:length(colnames(combi))],sd));names(SDs) <- "SDs"
-## bind the two:
-MSD <- merge(Means,SDs,by=0);names(MSD)[1] <- "Feature_variable";MSD[,1] <- as.factor(MSD[,1])
+## only take the rownames containing mean() and std():
+MSD <- combi[,c(1:3,grep("mean()",colnames(combi)),grep("std()",colnames(combi)))]
 
 ###############################################
 ## 3) Use descriptive activity names to name the activities in the data set
 ###############################################
 
+## reading the activity description:
+activities <- read.table(file="./data/UCI HAR Dataset/activity_labels.txt",header=FALSE)
+## make data frame containing the meaning of the activity coding:
+Activities <- data.frame(Activity=activities[,2][combi$Y])
 
 ###############################################
 ## 4) Appropriately label the data set with descriptive activity names. 
 ###############################################
 
-
-
+## add activity label to activity coding within data set:
+combi2 <- cbind(Activities,MSD) 
+combi2[1:5,1:5]
 
 ###############################################
 ## 5) Create a second, independent tidy data set with the average of each variable for each activity and each subject. 
 ###############################################
-Tidy <- data.frame(Var1=seq(1,10),Var2=seq(10,100,10))
+
+## make variable subject_activity
+combi2$Sub_Act <- paste(combi$Subject,combi2$Activity,combi2$Y,sep=":")
+
+## assign each subject_activity combination the average within the selected (mean, std) variables:
+combi3 <- data.frame(Combination=unique(combi2$Sub_Act));rownames(combi3) <- combi3[,1]
+for(i in 5:(length(combi2)-1)){
+DF <- data.frame(with(combi2,tapply(combi2[,i],combi2$Sub_Act,mean)))
+names(DF) <- names(combi2)[i]
+combi3 <- cbind(combi3,DF)
+}
+rownames(combi3) <- 1:length(rownames(combi3))
+
+## setup the tidy data set by splitting and adding the joined variable:
+combi3$Combination <- as.character(combi3$Combination)
+Unsplit <- data.frame(matrix(unlist(strsplit(combi3$Combination, ":")),ncol=3,byrow=TRUE))
+Prep <- cbind(Unsplit,combi3)
+names(Prep)[1:3] <- c("Subject","Activity","Y")
+
+## final tidy data set: 
+Tidy <- Prep[,-4]
+dim(Tidy);Tidy[1:10,1:5]
+
+
+## save data set to the folder:
 write.table(Tidy,"Tidy.txt",sep=";",row.names=FALSE)
